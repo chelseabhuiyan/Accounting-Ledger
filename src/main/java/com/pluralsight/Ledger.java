@@ -125,10 +125,10 @@ public class Ledger {
 
         }
         for (String transaction : transactions) {
-            String[] parts = transaction.split("\\|");  //breaks up each line with the | symbol called a pipe delimiter
-            if (parts.length == 5) {     //There should be 5 parts since we have 5 different categories
+            String[] section = transaction.split("\\|");  //breaks up each line with the | symbol called a pipe delimiter
+            if (section.length == 5) {     //There should be 5 parts since we have 5 different categories
                 System.out.printf("%-12s %-10s %-25s %-15s $%-10s\n",
-                        parts[0], parts[1], parts[2], parts[3], parts[4]); //$ added in front of amount and also it is formated correctly to display
+                        section[0], section[1], section[2], section[3], section[4]); //$ added in front of amount and also it is formated correctly to display
             }
         }
 
