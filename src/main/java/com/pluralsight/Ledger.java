@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.io.BufferedReader;
 import java.util.Collections;
+import java.util.Calendar;
 
 public class Ledger {
     static Scanner scanner = new Scanner(System.in);
@@ -113,7 +114,7 @@ public class Ledger {
                 displayTransactions("PAYMENT");
                 break;
             case "R":
-                viewReports();
+                reportsView();
                 break;
             case "H":
                 return; // Exit to Home
@@ -169,10 +170,10 @@ public class Ledger {
                 double amount = Double.parseDouble(section[4]);
 
                 boolean show = switch (filter) {
-                    case "ALL" -> true;                // Show all transactions
-                    case "DEPOSIT" -> amount >= 0;    // Show is true if positive or zero amounts
-                    case "PAYMENT" -> amount < 0;     // Show is true if amount is negative
-                    default -> false;                 // Default to false if the filter is invalid
+                    case "A" -> true;           // Show all transactions
+                    case "D" -> amount >= 0;    // Show is true if positive or zero amounts
+                    case "P" -> amount < 0;     // Show is true if amount is negative
+                    default -> false;           // Default to false if the filter is invalid
                 };
 
                 // If the 'show' variable is true, print the transaction
@@ -183,4 +184,43 @@ public class Ledger {
             }
         }
     }
+    public static void reportsView(){
+        System.out.println("Reports Screen ");
+        System.out.println("\n"); // space in between
+
+        System.out.println("1) Month To Date");
+        System.out.println("2) Previous Month");
+        System.out.println("3) Year To Date");
+        System.out.println("4) Previous Year");
+        System.out.println("5) Search by Vendor");
+        System.out.println("0) Back");
+
+        System.out.println("\n"); // space in between
+        System.out.print("Select a report option: ");
+
+        String choice = scanner.nextLine().toUpperCase();
+
+        switch (choice) {
+            case "1":
+                displayMonthToDate();
+                break;
+            case "2":
+                displayPreviousMonth();
+                break;
+            case "3":
+                displayYearToDate();
+                break;
+            case "4":
+                displayPreviousYear();
+                break;
+            case "5":
+                searchByVendor();
+                break;
+            case "0":
+                return; // Go back to the previous report page
+            default:
+                System.out.println("Invalid option. Try again.");
+        }
+    }
+
 }
