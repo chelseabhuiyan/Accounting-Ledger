@@ -5,6 +5,13 @@ import java.util.Date;
 import java.text.SimpleDateFormat; //Formats the date
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.File;
+import java.io.FileReader;
+import java.util.ArrayList;
+import java.util.List;
+import java.io.BufferedReader;
+import java.util.Collections;
+
 
 public class Ledger {
     static Scanner scanner=new Scanner(System.in);
@@ -83,6 +90,49 @@ public class Ledger {
 
     public static void viewLedger() {
         System.out.println("View Ledger  ");
-        // Logic to view the ledger will go here
+
+        File file = new File("transactions.csv"); //file object is created that points to transactions.csv(where all the data is stored)
+
+        //If the file doesn't exit the if statement will return true and it will print out that no transactions were found
+        if (!file.exists()) {
+            System.out.println("There are NO transactions. Ledger is empty.");
+            return;
+        }
+
+        List<String> transactions = new ArrayList<>(); //A list is created to store each line of transaction from the csv file
+
+        //Open file for reading using BufferedReader. It is try block since it automatically closes after
+        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                transactions.add(line); // Add each line to the list as long as it isn't null
+            }
+        } catch (IOException e) {
+            System.out.println("An error occurred while reading the ledger.");
+            e.printStackTrace();  //prints where the error happened in terminal
+            return;
+        }
+        //If the transaction list is empty
+        if (transactions.isEmpty()) {
+            System.out.println("There are no transactions found.");
+        } else {
+            // Show most recent transactions first (reverse order)
+            Collections.reverse(transactions);
+            //Format to print out the ledger
+            System.out.printf("%-12s %-10s %-25s %-15s %-10s\n",
+                    "Date", "Time", "Description", "Vendor", "Amount");
+            System.out.println("/n"); //space to separate it
+
+        }
+        for (String transaction : transactions) {
+            String[] parts = transaction.split("\\|");  //breaks up each line with the | symbol called a pipe delimiter
+            if (parts.length == 5) {     //There should be 5 parts since we have 5 different categories
+                System.out.printf("%-12s %-10s %-25s %-15s $%-10s\n",
+                        parts[0], parts[1], parts[2], parts[3], parts[4]); //$ added in front of amount and also it is formated correctly to display
+            }
+        }
+
+
+
     }
 }
