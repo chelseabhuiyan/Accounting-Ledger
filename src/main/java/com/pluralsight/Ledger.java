@@ -13,6 +13,10 @@ import java.io.BufferedReader;
 import java.util.Collections;
 import java.util.Calendar;
 
+/**
+  The Ledger class handles financial transactions by reading from and writing to a CSV file.
+  It displays by deposits, payments, and filters by different transaction reports.
+ */
 public class Ledger {
     static Scanner scanner = new Scanner(System.in);
 
@@ -222,5 +226,135 @@ public class Ledger {
                 System.out.println("Invalid option. Try again.");
         }
     }
+    private static void displayMonthToDate() {
+        Date currentDate = new Date(); // Create a Date object for today's date
+        Calendar calendar = Calendar.getInstance(); // Initialize calendar with current date/time
+        calendar.setTime(currentDate); // Set the calendar time to the current date
+
+        int currentMonth = calendar.get(Calendar.MONTH); // Get current month (0-11)
+        int currentYear = calendar.get(Calendar.YEAR);   // Get current year (e.g., 2025)
+
+        // Get transactions matching this month and year
+        List<String> transactions = getTransactionsForPeriod(currentYear, currentMonth, 0);
+        printTransactions(transactions); // Print them
+    }
+    //Show last Month
+    private static void displayPreviousMonth() {
+        Calendar calendar = Calendar.getInstance(); //gets the current date
+        calendar.add(Calendar.MONTH, -1); // Go back one month
+        int month = calendar.get(Calendar.MONTH); // fetch the month (0-based, so January is 0).
+        int year = calendar.get(Calendar.YEAR);// fetches the year
+
+        List<String> transactions = getTransactionsForPeriod(year, month, 0); //goes to helper method to filter out the transactions
+        printTransactions(transactions);  //prints it
+    }
+
+    //Show transactions from Jan 1 to current date
+    private static void displayYearToDate() {
+        int year = Calendar.getInstance().get(Calendar.YEAR); //gets the current year using the calendar class.
+        List<String> transactions = getTransactionsForPeriod(year, -1, 0); // run the helper function to filters it for transaction the specific year, -1 = all month, 0 means any day
+        printTransactions(transactions); //prints it
+    }
+
+    //Show transactions for last year
+    private static void displayPreviousYear() {
+        int year = Calendar.getInstance().get(Calendar.YEAR) - 1;  //gets current year and subtracts one from it
+        List<String> transactions = getTransactionsForPeriod(year, -1, 0); // filters it using the helper method -1 = any month
+        printTransactions(transactions);
+    }
+
+    //Helper method to filter
+    private static List<String> getTransactionsForPeriod(int year, int month, int day) {
+        File file = new File("transactions.csv");  //points to the file where the transaction is stored
+        List<String> filtered = new ArrayList<>(); //creates a list to store the filtered transactions
+
+        if (!file.exists())
+        {return filtered; } //if file didn't exist return empty list
+
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+            String line;
+            while ((line = reader.readLine()) != null) {   //read each line in the csv
+                String[] parts = line.split("\\|"); //split the line into an array with the "|" delimiter
+                if (parts.length == 5) { //makes sure the line was correct and had 5 parts
+                    String[] dateParts = parts[0].split("-"); // splits the date into parts  yyyy-MM-dd
+                    int entryYear = Integer.parseInt(dateParts[0]); //extracts the year
+                    int entryMonth = Integer.parseInt(dateParts[1]) - 1; // extracts the month. Calendar class months are 0-based
+                    int entryDay = Integer.parseInt(dateParts[2]); //extracts the day
+
+                    //checks to see if the transaction matches the year, month, day
+                    boolean matches = entryYear == year &&
+                            (month == -1 || entryMonth == month) &&
+                            (day == 0 || entryDay == day);
+
+                    if (matches) filtered.add(line); // if match is found with that line add the whole transaction line to the list
+                }
+            }
+        } catch (IOException e) { //error
+            System.out.println("Error reading transactions.");
+            e.printStackTrace(); //prints in terminal the error
+        }
+
+        return filtered;  //returns the filtered version
+    }
+
+    //Helper method to print the transaction
+    private static void printTransactions(List<String> transactions) {
+        if (transactions.isEmpty()) { //if no transactions are found after filtering
+            System.out.println("No transactions found.");
+            return; //exit
+        }
+
+        //prints the header with the column names
+        System.out.printf("%-12s %-10s %-25s %-15s %-10s\n",
+                "Date", "Time", "Description", "Vendor", "Amount");
+        Collections.reverse(transactions); //reverse list to show recent transactions first
+
+        //iterate over each transaction that were in the filtered list
+        for (String t : transactions) {
+            String[] p = t.split("\\|"); //split each by the "|"
+
+
+            if (p.length == 5) { //make sure there are five parts
+                double amount = Double.parseDouble(p[4]); //convert the amount to double
+
+                // Print each transaction in a formatted version.
+                System.out.printf("%-12s %-10s %-25s %-15s $%-10.2f\n",
+                        p[0], p[1], p[2], p[3], amount);
+            }
+        }
+    }
+
+    //Search with vendor name
+    private static void searchByVendor() {
+        System.out.print("Enter vendor name to search: ");
+        String vendorSearch = scanner.nextLine().trim().toLowerCase(); // Get user input, trim spaces, and convert to lowercase for case-insensitive search
+
+        File file = new File("transactions.csv");
+        if (!file.exists()) {
+            System.out.println("No transactions found.");
+            return;
+        }
+
+        List<String> matching = new ArrayList<>();  //List to store matching transactions
+
+        //read through the csv file
+        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+            String line; //take in a line
+            while ((line = reader.readLine()) != null) { //as long as the line not empty
+                String[] parts = line.split("\\|");  //break into parts by the "|"
+                if (parts.length == 5 && parts[3].toLowerCase().contains(vendorSearch)) { //the thrid part is the vendor make that lowercase and compare to the user input
+                    matching.add(line); // if its matching add the line
+                }
+            }
+        } catch (IOException e) { //error handling
+            System.out.println("Error reading transactions.");
+            e.printStackTrace();
+        }
+
+        printTransactions(matching); //print the transactions using the helper method
+    }
+
+
 
 }
