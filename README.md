@@ -19,10 +19,15 @@ Accounting-Ledger is a Java Command Line application designed to manage and trac
 - `H) Home`: Returns to the home screen.
 
 
-### Reports Menu
+#### Reports Menu
 - `1) Month To Date`: Shows transactions from the current month.
 - `2) Previous Month`: Shows transactions from last month.
 - `3) Year To Date`: Shows transactions from the current year.
 - `4) Previous Year`: Shows transactions from the last calendar year.
 - `5) Search by Vendor`: Filters transactions by vendor name.
 - `0) Back`: Returns to the Ledger menu.
+
+
+### All transactions in the application should be read from and saved to a transaction file named `transactions.csv`.  
+
+Each transaction should be saved as a single line with the following format:date|time|description|vendor|amount
