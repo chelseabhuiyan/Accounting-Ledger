@@ -1,6 +1,7 @@
 package com.pluralsight;
 
 import java.util.Scanner;
+import static com.pluralsight.ColorText.*;
 
 public class Main {
     public static void main(String[] args) {
@@ -10,13 +11,13 @@ public class Main {
 
         while (runWhileLoop) {
             System.out.println(); //Leaves a blank line in between
-            System.out.println("Welcome to the Accounting Ledger App!");
-            System.out.println("D. Add Deposit");
-            System.out.println("P. Make Payment");
-            System.out.println("L. Ledger");
-            System.out.println("B. View Current Balance"); //allow user to see their current balance
-            System.out.println("X. Exit");
-            System.out.print("Choose an option: ");  /*asks user for input on the same line*/
+            System.out.println(BLUE + "Welcome to the Accounting Ledger App!" + RESET);
+            System.out.println(CYAN + "D. Add Deposit" + RESET);
+            System.out.println(CYAN + "P. Make Payment" + RESET);
+            System.out.println(CYAN + "L. Ledger" + RESET);
+            System.out.println(CYAN + "B. View Current Balance" + RESET); //see current balance
+            System.out.println(CYAN + "X. Exit" + RESET);  /*asks user for input on the same line*/
+            System.out.println(GREEN+ "Choose an option: ");
 
             String choice = scanner.nextLine().trim().toUpperCase();  /*stores the user input as the value for variable choice*/
 

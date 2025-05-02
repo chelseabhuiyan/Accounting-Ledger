@@ -1,5 +1,6 @@
 package com.pluralsight;
 
+import static com.pluralsight.ColorText.*;
 import java.util.Scanner;
 import java.util.Date;
 import java.text.SimpleDateFormat; // Formats the date
@@ -122,17 +123,15 @@ public class Ledger {
     public static void viewLedger() {
        while (true) {//Stays in the ledger menu instead of going to the home screen each time
            System.out.println("\n"); // space in between
-           System.out.println("Ledger Menu Screen ");
+           System.out.println(BLUE + "Ledger Menu Screen" + RESET);
+           System.out.println(CYAN + "A) All" + RESET);
+           System.out.println(CYAN + "D) Deposits" + RESET);
+           System.out.println(CYAN + "P) Payments" + RESET);
+           System.out.println(CYAN + "R) Reports" + RESET);
+           System.out.println(CYAN + "H) Back to Main Menu" + RESET);
+           System.out.println();
+           System.out.print(GREEN + "Choose an option: " + RESET);
 
-
-           System.out.println("A) All Entries");
-           System.out.println("D) Deposits Only");
-           System.out.println("P) Payments Only");
-           System.out.println("R) Reports");
-           System.out.println("H) Home");
-
-           System.out.println("\n"); // space in between
-           System.out.print("Select an option: ");
 
            String filter = scanner.nextLine().toUpperCase();
 
@@ -223,18 +222,19 @@ public class Ledger {
     public static void reportsView() {
         while (true) {
             System.out.println("\n"); // space in between
-            System.out.println("Reports Screen ");
 
-            System.out.println("1) Month To Date");
-            System.out.println("2) Previous Month");
-            System.out.println("3) Year To Date");
-            System.out.println("4) Previous Year");
-            System.out.println("5) Search by Vendor");
-            System.out.println("6) Custom Search");
-            System.out.println("0) Back");
+            System.out.println(BLUE + "Reports Screen" + RESET);
+
+            System.out.println(CYAN + "1) Month To Date" + RESET);
+            System.out.println(CYAN + "2) Previous Month" + RESET);
+            System.out.println(CYAN + "3) Year To Date" + RESET);
+            System.out.println(CYAN + "4) Previous Year" + RESET);
+            System.out.println(CYAN + "5) Search by Vendor" + RESET);
+            System.out.println(CYAN + "6) Custom Search" + RESET);
+            System.out.println(CYAN + "0) Back" + RESET);
 
             System.out.println("\n"); // space in between
-            System.out.print("Select a report option: ");
+            System.out.print(GREEN + "Select a report option: " + RESET);
 
             String choice = scanner.nextLine().toUpperCase();
 
