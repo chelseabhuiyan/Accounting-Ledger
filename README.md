@@ -98,3 +98,4 @@ This loop continues prompting the user until they provide a valid numeric input.
 - Custom Search in Reports.
 - Printing current Balance.
 - Ask for confirmation before depositing and making payments.
+- Added color to the Command Line Interface to improve visual clarity and enhance user understanding
