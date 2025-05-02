@@ -52,7 +52,27 @@ After each search result is shown, the user returns to the Custom Search Menu to
 
 ### IDE and Version Control
 - **IntelliJ IDEA Community Edition**: Primary development environment used for writing and testing code.
-- **Git & GitHub**: Version control system used to track changes and collaborate.
+- **Git Bash & GitHub**: Version control system used to track changes and collaborate.
 
 
+### Application Screen Images With an example
 
+### Home Screen
+[HomeScreen](Screenshots/HomeScreen%20.png)
+
+### Ledger Screen
+[Ledger Screen Showing all Entries](Screenshots/Ledger%20Screen%20Showing%20all%20Entries.png) 
+
+### Reports Screen
+[Reports Screen with previous month option](Screenshots/Reports%20Screen%20with%20previous%20month%20option.png)
+
+### Custom Search Screen
+[Custom Search](Screenshots/custom%20search%20.png)
+
+### Error Screens
+
+[]
+
+
+### Interesting Peice of Code
+h

@@ -93,8 +93,9 @@ public class Ledger {
 
     public static void viewLedger() {
        while (true) {//Stays in the ledger menu instead of going to the home screen each time
-           System.out.println("Ledger Menu Screen ");
            System.out.println("\n"); // space in between
+           System.out.println("Ledger Menu Screen ");
+
 
            System.out.println("A) All Entries");
            System.out.println("D) Deposits Only");
@@ -165,7 +166,7 @@ public class Ledger {
             // Prints the header (column titles for the ledger)
             System.out.printf("%-12s %-10s %-25s %-15s %-10s\n",
                     "Date", "Time", "Description", "Vendor", "Amount");
-            System.out.println("\n"); // space to separate it
+
         }
 
         // Apply the filter logic based on the user-selected filter
@@ -193,8 +194,8 @@ public class Ledger {
     }
     public static void reportsView() {
         while (true) {
-            System.out.println("Reports Screen ");
             System.out.println("\n"); // space in between
+            System.out.println("Reports Screen ");
 
             System.out.println("1) Month To Date");
             System.out.println("2) Previous Month");
