@@ -93,3 +93,8 @@ while (true) {
 ```
 ####
 This loop continues prompting the user until they provide a valid numeric input. It prevents application crashes and improves usability. This code is used in both the deposit and payment methods to ensure the user can continue using the program even if they enter an invalid value the first time.
+
+### Extra Functionality Added
+- Custom Search in Reports.
+- Printing current Balance.
+- Ask for confirmation before depositing and making payments.

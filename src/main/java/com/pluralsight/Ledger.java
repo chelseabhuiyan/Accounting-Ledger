@@ -19,7 +19,6 @@ import java.util.Calendar;
  */
 public class Ledger {
     static Scanner scanner = new Scanner(System.in);
-
     public static void addDeposit() {
         System.out.println("Add Deposit!");
 
@@ -40,34 +39,40 @@ public class Ledger {
         while (true) {
             System.out.println("Enter amount:");
             try {
-                amount = Double.parseDouble(scanner.nextLine());
+                amount = Double.parseDouble(scanner.nextLine()); // Use nextLine() and parse the value to double
                 break; // exit loop if successful
             } catch (NumberFormatException e) {
                 System.out.println("Invalid input. Please enter a valid number.");
             }
         }
+        System.out.println("Do you want to proceed with the deposit? (yes/no):");
+        String confirmation = scanner.nextLine().toLowerCase(); // Get user confirmation (yes/no)
 
-        scanner.nextLine(); // a hidden new line was left so use this to clear up for the next input
+        // Check the user's input
+        if (confirmation.equals("yes")) {
 
-        // Format the transaction string to match the required CSV format
-        String transaction = date + "|" + time + "|" + description + "|" + vendor + "|" + amount;
+            // Format the transaction string to match the required CSV format
+            String transaction = date + "|" + time + "|" + description + "|" + vendor + "|" + amount;
 
-        // Write to the CSV file using try catch
-        try (FileWriter writer = new FileWriter("transactions.csv", true))  // opens the transactions.cvs file to write, and true means it is in append mode, not overwrite meaning new entries add to the csv file. Try closes the FilterWriter when we are done.
-        {
-            writer.append(transaction);   // adds transaction string created into the csv file
-            writer.append("\n");          // new line is placed after the transaction so that the next entry is on a new page
-            System.out.println("Deposit recorded successfully!"); // Success message printed if transaction is added to the csv file correctly
-        } catch (IOException e) {   // errors
-            System.out.println("An error occurred while saving the deposit.");  // error message
-            e.printStackTrace();  // prints where the error occurred (used to debug)
+            // Write to the CSV file using try-catch
+            try (FileWriter writer = new FileWriter("transactions.csv", true)) {  // opens the transactions.csv file to write, and true means it is in append mode
+                writer.append(transaction);   // adds transaction string created into the csv file
+                writer.append("\n");          // new line is placed after the transaction so that the next entry is on a new line
+                System.out.println("Deposit recorded successfully!"); // Success message printed if transaction is added to the csv file correctly
+            } catch (IOException e) {   // errors
+                System.out.println("An error occurred while saving the deposit.");  // error message
+                e.printStackTrace();  // prints where the error occurred (used to debug)
+            }
+        }
+        else{
+            System.out.println("Deposit Canceled");
         }
     }
 
     public static void makePayment() {
-        System.out.println("Now making a payment");
+        System.out.println("Make Payment!");
 
-        // Get current date and time for the deposit entry
+        // Get current date and time for the payment entry
         String date = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
         String time = new SimpleDateFormat("HH:mm:ss").format(new Date());
 
@@ -84,24 +89,33 @@ public class Ledger {
         while (true) {
             System.out.println("Enter amount:");
             try {
-                amount = -Math.abs(Double.parseDouble(scanner.nextLine())); // ensures amount is negative
-                break;
+                amount = Double.parseDouble(scanner.nextLine()); // Use nextLine() and parse the value to double
+                break; // exit loop if successful
             } catch (NumberFormatException e) {
                 System.out.println("Invalid input. Please enter a valid number.");
             }
         }
 
-        // Format the transaction to match the required csv format
-        String transaction = date + "|" + time + "|" + description + "|" + vendor + "|" + amount;
+        System.out.println("Do you want to proceed with the payment? (yes/no):");
+        String confirmation = scanner.nextLine().toLowerCase(); // Get user confirmation (yes/no)
 
-        // Write to the CSV file
-        try (FileWriter writer = new FileWriter("transactions.csv", true)) {
-            writer.append(transaction); // add transaction string to the csv
-            writer.append("\n");   // go to the next line to get ready for the next transaction
-            System.out.println("Payment recorded successfully!");
-        } catch (IOException e) {   // errors
-            System.out.println("An error occurred while saving the payment.");
-            e.printStackTrace();   // print where the error is
+        // Check the user's input
+        if (confirmation.equals("yes")) {
+            // Format the transaction string to match the required CSV format
+            String transaction = date + "|" + time + "|" + description + "|" + vendor + "|" + amount;
+
+            // Write to the CSV file using try-catch
+            try (FileWriter writer = new FileWriter("transactions.csv", true)) {  // opens the transactions.csv file to write, and true means it is in append mode
+                writer.append(transaction);   // adds transaction string created into the csv file
+                writer.append("\n");          // new line is placed after the transaction so that the next entry is on a new line
+                System.out.println("Payment recorded successfully!"); // Success message printed if transaction is added to the csv file correctly
+            } catch (IOException e) {   // errors
+                System.out.println("An error occurred while saving the payment.");  // error message
+                e.printStackTrace();  // prints where the error occurred (used to debug)
+            }
+        }
+        else{
+            System.out.println("Payment canceled");
         }
     }
 
@@ -481,5 +495,39 @@ public class Ledger {
         // Display all matching transactions using existing helper
         printTransactions(matches);
     }
+    public static double calculateBalance() {
+        File file = new File("transactions.csv");
+
+        // If the file doesn't exist, return 0
+        if (!file.exists()) {
+            return 0.0;
+        }
+
+        double balance = 0.0;
+
+        // Read transactions from the file and calculate balance
+        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] parts = line.split("\\|");
+
+                if (parts.length == 5) {
+                    double amount = Double.parseDouble(parts[4]); // Get the amount field
+                    balance += amount; // Add the amount to the balance
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("Error reading transactions.");
+            e.printStackTrace();
+        }
+
+        return balance;
+    }
+
+    public static void viewBalance() {
+        double balance = calculateBalance();
+        System.out.println("Current balance: $" + String.format("%.2f", balance));
+    }
+
 
 }

@@ -14,6 +14,7 @@ public class Main {
             System.out.println("D. Add Deposit");
             System.out.println("P. Make Payment");
             System.out.println("L. Ledger");
+            System.out.println("B. View Current Balance"); //allow user to see their current balance
             System.out.println("X. Exit");
             System.out.print("Choose an option: ");  /*asks user for input on the same line*/
 
@@ -33,9 +34,13 @@ public class Main {
                     System.out.println("Exiting application. Goodbye!");
                     runWhileLoop = false; //Exits while loop
                 }
+                case "B"->{
+                    Ledger.viewBalance();
+                }
                 default ->
                         System.out.println("Invalid input. Please enter D, P, L, or X."); /*if anything other than D,P,L, or X is typed it returns this message to the user*/
             }
+
         }
         scanner.close(); //Close Scanner
     }
