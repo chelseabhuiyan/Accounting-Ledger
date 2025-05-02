@@ -36,8 +36,17 @@ public class Ledger {
         String vendor = scanner.nextLine();   // Vendor is saved as a string
 
         // Get amount
-        System.out.println("Enter amount:");
-        double amount = scanner.nextDouble(); // amount is saved as a double
+        double amount = 0.0;
+        while (true) {
+            System.out.println("Enter amount:");
+            try {
+                amount = Double.parseDouble(scanner.nextLine());
+                break; // exit loop if successful
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input. Please enter a valid number.");
+            }
+        }
+
         scanner.nextLine(); // a hidden new line was left so use this to clear up for the next input
 
         // Format the transaction string to match the required CSV format
@@ -71,11 +80,16 @@ public class Ledger {
         String vendor = scanner.nextLine();   // Vendor is saved as a string
 
         // Get amount
-        System.out.println("Enter amount:");
-        double amount = scanner.nextDouble(); // amount is saved as a double
-        scanner.nextLine(); // a hidden new line was left so use this to clear up for the next input
-
-        amount = -Math.abs(amount); // amount is negative so a - is placed in front of the value entered by the user
+        double amount = 0.0;
+        while (true) {
+            System.out.println("Enter amount:");
+            try {
+                amount = -Math.abs(Double.parseDouble(scanner.nextLine())); // ensures amount is negative
+                break;
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input. Please enter a valid number.");
+            }
+        }
 
         // Format the transaction to match the required csv format
         String transaction = date + "|" + time + "|" + description + "|" + vendor + "|" + amount;
