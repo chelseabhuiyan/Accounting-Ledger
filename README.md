@@ -79,6 +79,7 @@ After each search result is shown, the user returns to the Custom Search Menu to
 
 ### Interesting Peice of Code
 
+```java
 double amount = 0.0;
 while (true) {
     System.out.println("Enter amount:");
@@ -89,5 +90,6 @@ while (true) {
         System.out.println("Invalid input. Please enter a valid number.");
     }
 }
-
+```
+####
 This loop continues prompting the user until they provide a valid numeric input. It prevents application crashes and improves usability. This code is used in both the deposit and payment methods to ensure the user can continue using the program even if they enter an invalid value the first time.
