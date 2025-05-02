@@ -21,7 +21,7 @@ public class Ledger {
     static Scanner scanner = new Scanner(System.in);
 
     public static void addDeposit() {
-        System.out.println("You are Depositing!");
+        System.out.println("Add Deposit!");
 
         // Get current date and time for the deposit entry
         String date = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
@@ -92,39 +92,42 @@ public class Ledger {
     }
 
     public static void viewLedger() {
-        System.out.println("Ledger Menu Screen ");
-        System.out.println("\n"); // space in between
+       while (true) {//Stays in the ledger menu instead of going to the home screen each time
+           System.out.println("Ledger Menu Screen ");
+           System.out.println("\n"); // space in between
 
-        System.out.println("A) All Entries");
-        System.out.println("D) Deposits Only");
-        System.out.println("P) Payments Only");
-        System.out.println("R) Reports");
-        System.out.println("H) Home");
+           System.out.println("A) All Entries");
+           System.out.println("D) Deposits Only");
+           System.out.println("P) Payments Only");
+           System.out.println("R) Reports");
+           System.out.println("H) Home");
 
-        System.out.println("\n"); // space in between
-        System.out.print("Select an option: ");
+           System.out.println("\n"); // space in between
+           System.out.print("Select an option: ");
 
-        String filter = scanner.nextLine().toUpperCase();
+           String filter = scanner.nextLine().toUpperCase();
 
-        // Switch options
-        switch (filter) {
-            case "A":
-                displayTransactions("ALL");
-                break;
-            case "D":
-                displayTransactions("DEPOSIT");
-                break;
-            case "P":
-                displayTransactions("PAYMENT");
-                break;
-            case "R":
-                reportsView();
-                break;
-            case "H":
-                return; // Exit to Home
-            default:
-                System.out.println("Invalid option. Try again.");
-        }
+           // Switch options
+           switch (filter) {
+               case "A":
+                   displayTransactions("A");
+                   break;
+               case "D":
+                   displayTransactions("D");
+                   break;
+               case "P":
+                   displayTransactions("P");
+                   break;
+               case "R":
+                   reportsView();
+                   break;
+               case "H":
+                   return; // Exit to Home
+               default:
+                   System.out.println("Invalid option. Try again.");
+           }
+           System.out.println(); // extra space between iterations
+       }
     }
 
     public static void displayTransactions(String filter) {
@@ -188,42 +191,48 @@ public class Ledger {
             }
         }
     }
-    public static void reportsView(){
-        System.out.println("Reports Screen ");
-        System.out.println("\n"); // space in between
+    public static void reportsView() {
+        while (true) {
+            System.out.println("Reports Screen ");
+            System.out.println("\n"); // space in between
 
-        System.out.println("1) Month To Date");
-        System.out.println("2) Previous Month");
-        System.out.println("3) Year To Date");
-        System.out.println("4) Previous Year");
-        System.out.println("5) Search by Vendor");
-        System.out.println("0) Back");
+            System.out.println("1) Month To Date");
+            System.out.println("2) Previous Month");
+            System.out.println("3) Year To Date");
+            System.out.println("4) Previous Year");
+            System.out.println("5) Search by Vendor");
+            System.out.println("6) Custom Search");
+            System.out.println("0) Back");
 
-        System.out.println("\n"); // space in between
-        System.out.print("Select a report option: ");
+            System.out.println("\n"); // space in between
+            System.out.print("Select a report option: ");
 
-        String choice = scanner.nextLine().toUpperCase();
+            String choice = scanner.nextLine().toUpperCase();
 
-        switch (choice) {
-            case "1":
-                displayMonthToDate();
-                break;
-            case "2":
-                displayPreviousMonth();
-                break;
-            case "3":
-                displayYearToDate();
-                break;
-            case "4":
-                displayPreviousYear();
-                break;
-            case "5":
-                searchByVendor();
-                break;
-            case "0":
-                return; // Go back to the previous report page
-            default:
-                System.out.println("Invalid option. Try again.");
+            switch (choice) {
+                case "1":
+                    displayMonthToDate();
+                    break;
+                case "2":
+                    displayPreviousMonth();
+                    break;
+                case "3":
+                    displayYearToDate();
+                    break;
+                case "4":
+                    displayPreviousYear();
+                    break;
+                case "5":
+                    searchByVendor();
+                    break;
+                case "6":
+                    customSearch();
+                    break;
+                case "0":
+                    return; // Go back to the previous report page
+                default:
+                    System.out.println("Invalid option. Try again.");
+            }
         }
     }
     private static void displayMonthToDate() {
@@ -355,6 +364,107 @@ public class Ledger {
         printTransactions(matching); //print the transactions using the helper method
     }
 
+    //Custom search
+    private static void customSearch() {
+        System.out.println("CUSTOM SEARCH");
+        System.out.println("(Press Enter to skip any filter)");
 
+        // Prompt user for optional filters
+        System.out.print("Start Date (yyyy-MM-dd): ");
+        String startDateInput = scanner.nextLine().trim();  // Get start date filter
+
+        System.out.print("End Date (yyyy-MM-dd): ");
+        String endDateInput = scanner.nextLine().trim();    // Get end date filter
+
+        System.out.print("Description contains: ");
+        String descriptionFilter = scanner.nextLine().trim().toLowerCase(); // Get description keyword, lowercase for case-insensitive search
+
+        System.out.print("Vendor contains: ");
+        String vendorFilter = scanner.nextLine().trim().toLowerCase(); // Get vendor keyword
+
+        System.out.print("Amount equals (exact match): ");
+        String amountInput = scanner.nextLine().trim();  // Get amount as string
+
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd"); // Format used for parsing dates
+
+        // Variables to hold parsed filter values
+        Date startDate = null;
+        Date endDate = null;
+        Double amount = null;
+
+        try {
+            // Parse dates and amount only if input was provided
+            if (!startDateInput.isEmpty()) {
+                startDate = formatter.parse(startDateInput);  // Convert string to Date
+            }
+            if (!endDateInput.isEmpty()) {
+                endDate = formatter.parse(endDateInput);      // Convert string to Date
+            }
+            if (!amountInput.isEmpty()) {
+                amount = Double.parseDouble(amountInput);     // Convert amount to double
+            }
+        } catch (Exception e) {
+            // If any parsing fails, show error and stop search
+            System.out.println("Invalid input. Please use correct formats.");
+            return;
+        }
+
+        List<String> matches = new ArrayList<>(); // List to store matching transactions
+        File file = new File("transactions.csv"); // File where transactions are stored
+
+        // Check if file exists before reading
+        if (!file.exists()) {
+            System.out.println("No transactions found.");
+            return;
+        }
+
+        // Read transactions from the file line-by-line
+        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] parts = line.split("\\|");  // Split line into components
+                if (parts.length == 5) {
+                    // Parse date and amount from current transaction
+                    Date transactionDate = formatter.parse(parts[0]);
+                    String description = parts[2].toLowerCase(); // Transaction description
+                    String vendor = parts[3].toLowerCase();      // Vendor name
+                    double transactionAmount = Double.parseDouble(parts[4]); // Amount
+
+                    // Assume the transaction matches unless a filter fails
+                    boolean matchesFilter = true;
+
+                    // Apply filters one-by-one if user provided them
+                    if (startDate != null && transactionDate.before(startDate)) {
+                        matchesFilter = false;  // Skip if before start date
+                    }
+                    if (endDate != null && transactionDate.after(endDate)) {
+                        matchesFilter = false;  // Skip if after end date
+                    }
+                    if (!descriptionFilter.isEmpty() && !description.contains(descriptionFilter)) {
+                        matchesFilter = false;  // Skip if description doesn’t contain keyword
+                    }
+                    if (!vendorFilter.isEmpty() && !vendor.contains(vendorFilter)) {
+                        matchesFilter = false;  // Skip if vendor doesn’t match
+                    }
+                    if (amount != null && transactionAmount != amount) {
+                        matchesFilter = false;  // Skip if amount doesn’t match exactly
+                    }
+
+                    // If transaction passed all filters, add to result list
+                    if (matchesFilter) {
+                        matches.add(line);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            // Show error if something goes wrong while reading or parsing
+            System.out.println("Error reading or parsing transactions.");
+            e.printStackTrace();
+            return;
+        }
+
+        // Display all matching transactions using existing helper
+        printTransactions(matches);
+    }
 
 }

@@ -12,7 +12,7 @@ public class Main {
             System.out.println(); //Leaves a blank line in between
             System.out.println("Welcome to the Accounting Ledger App!");
             System.out.println("D. Add Deposit");
-            System.out.println("P. Make Payment (Debit)");
+            System.out.println("P. Make Payment");
             System.out.println("L. Ledger");
             System.out.println("X. Exit");
             System.out.print("Choose an option: ");  /*asks user for input on the same line*/
